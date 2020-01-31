@@ -5,7 +5,7 @@
 
 namespace library {
 
-  class lib {
+  class libClientServer {
   public:
     int64_t addition(int32_t i, int32_t j);
     void generate_throw();

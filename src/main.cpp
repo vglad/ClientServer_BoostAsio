@@ -1,5 +1,5 @@
 #include "Precompiled.hpp"
-#include "lib.hpp"
+#include "libClientServer.hpp"
 
 #include <iostream>
 
@@ -8,7 +8,7 @@ using namespace detail;
 
 int main() {
   try {
-    auto l = lib{};
+    auto l = libClientServer{};
     std::cout << l.addition(1, 41) << '\n';
     l.generate_throw();
   }

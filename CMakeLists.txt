@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.12)
-project(Project)
+project(ClientServer)
 
 if (MSVC)
     # warning level 4 and all warnings as errors

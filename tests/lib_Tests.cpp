@@ -1,12 +1,12 @@
 #include <catch.hpp>
 #include <catch2/trompeloeil.hpp>
 
-#include "lib.hpp"
+#include "libClientServer.hpp"
 
 using namespace library;
 
-TEST_CASE("testing my library", "[lib]") {
-  auto l = lib{};
+TEST_CASE("testing my library", "[libClientServer]") {
+  auto l = libClientServer{};
 
   SECTION("testing addition") {
     REQUIRE(l.addition(1, 41) == 42);

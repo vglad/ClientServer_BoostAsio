@@ -9,7 +9,7 @@ set(SOURCE_FILES testMain.cpp
 )
 
 add_executable (allTests ${SOURCE_FILES})
-target_link_libraries(allTests PRIVATE catch2 lib)
+target_link_libraries(allTests PRIVATE catch2 libClientServer)
 target_include_directories(allTests PRIVATE
     ../thirdparty/trompeloeil
     ../include/lib
