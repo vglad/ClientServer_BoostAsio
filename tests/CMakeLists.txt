@@ -9,7 +9,16 @@ set(SOURCE_FILES testMain.cpp
 )
 
 add_executable (allTests ${SOURCE_FILES})
-target_link_libraries(allTests PRIVATE catch2 libClientServer)
+
+if (NOT MSVC)
+  set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+  set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+  find_package(Threads REQUIRED)
+  target_link_libraries(allTests PRIVATE Threads::Threads catch2 libClientServer)
+else()
+  target_link_libraries(allTests PRIVATE catch2 libClientServer)
+endif()
+
 target_include_directories(allTests PRIVATE
     ../thirdparty/trompeloeil
     ../include/lib

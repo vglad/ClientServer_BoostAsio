@@ -11,5 +11,9 @@ namespace library {
     void generate_throw();
   };
 
+  class Server {
+  public:
+    int create_endpoint();
+  };
 }
 #endif //PROJECT_INCLUDE_LIB_LIB_HPP
