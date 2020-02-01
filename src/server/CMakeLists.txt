@@ -4,7 +4,10 @@ project(Server)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES
+    Server.cpp
+    main.cpp
+)
 
 add_executable(server ${SOURCE_FILES})
 
@@ -18,6 +21,7 @@ else()
 endif()
 
 target_include_directories(server PRIVATE
+    ../../thirdparty
     ../../include/detail
     ../../include/lib
 )

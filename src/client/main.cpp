@@ -1,16 +1,17 @@
 #include "Precompiled.hpp"
-#include "libClientServer.hpp"
+#include "Client.hpp"
 
 #include <iostream>
 
-using namespace library;
-using namespace detail;
+using namespace clientServer::client;
+using namespace clientServer::detail;
 
 int main() {
-  auto l = libClientServer{};
+  auto cl = Client{};
   try {
-    std::cout << l.addition(1, 41) << '\n';
-    l.generate_throw();
+    auto ep = cl.create_endpoint("127.0.0.1", 54000);
+    std::cout << ep.address().to_string() << " "
+              << ep.port() << '\n';
   }
   catch (std::exception const &) {
     print_nested_exception();

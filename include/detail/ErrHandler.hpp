@@ -1,9 +1,9 @@
-#ifndef PROJECT_INCLUDE_DETAIL_ERRHANDLER_HPP
-#define PROJECT_INCLUDE_DETAIL_ERRHANDLER_HPP
+#ifndef CLIENTSERVER_INCLUDE_DETAIL_ERRHANDLER_HPP
+#define CLIENTSERVER_INCLUDE_DETAIL_ERRHANDLER_HPP
 
 #include <iostream>
 
-namespace detail {
+namespace clientServer::detail {
 
 //*****************************************************************************
 // Exceptions handler
@@ -32,7 +32,7 @@ namespace detail {
 
 }
 
-#endif //PROJECT_INCLUDE_DETAIL_ERRHANDLER_HPP
+#endif //CLIENTSERVER_INCLUDE_DETAIL_ERRHANDLER_HPP
 
 //*****************************************************************************
 // Usage example

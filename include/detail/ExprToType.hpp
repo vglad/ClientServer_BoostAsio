@@ -1,9 +1,9 @@
-#ifndef PROJECT_INCLUDE_DETAIL_EXPRTOTYPE_HPP
-#define PROJECT_INCLUDE_DETAIL_EXPRTOTYPE_HPP
+#ifndef CLIENTSERVER_INCLUDE_DETAIL_EXPRTOTYPE_HPP
+#define CLIENTSERVER_INCLUDE_DETAIL_EXPRTOTYPE_HPP
 
 #include <iterator>
 
-namespace detail {
+namespace clientServer::detail {
 
 //*****************************************************************************
 //Turn an expression into a type
@@ -93,4 +93,4 @@ namespace detail {
 
 }
 
-#endif //PROJECT_INCLUDE_DETAIL_EXPRTOTYPE_HPP
+#endif //CLIENTSERVER_INCLUDE_DETAIL_EXPRTOTYPE_HPP

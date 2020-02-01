@@ -1,11 +1,11 @@
-#ifndef PROJECT_INCLUDE_DETAIL_TOKENISER_HPP
-#define PROJECT_INCLUDE_DETAIL_TOKENISER_HPP
+#ifndef CLIENTSERVER_INCLUDE_DETAIL_TOKENISER_HPP
+#define CLIENTSERVER_INCLUDE_DETAIL_TOKENISER_HPP
 
 #include <sstream>
 #include <algorithm>
 #include <memory>
 
-namespace detail {
+namespace clientServer::detail {
 
 //*****************************************************************************
 // This is general tokenizer
@@ -80,4 +80,4 @@ namespace detail {
 
 }
 
-#endif //PROJECT_INCLUDE_DETAIL_TOKENISER_HPP
+#endif //CLIENTSERVER_INCLUDE_DETAIL_TOKENISER_HPP

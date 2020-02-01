@@ -1,9 +1,9 @@
-#ifndef PROJECT_INCLUDE_DETAIL_TIMEMEASURMENT_HPP
-#define PROJECT_INCLUDE_DETAIL_TIMEMEASURMENT_HPP
+#ifndef CLIENTSERVER_INCLUDE_DETAIL_TIMEMEASURMENT_HPP
+#define CLIENTSERVER_INCLUDE_DETAIL_TIMEMEASURMENT_HPP
 
 #include <chrono>
 
-namespace detail {
+namespace clientServer::detail {
 
 //*****************************************************************************
 // Execution time measurement functions
@@ -31,4 +31,4 @@ namespace detail {
 
 }
 
-#endif //PROJECT_INCLUDE_DETAIL_TIMEMEASURMENT_HPP
+#endif //CLIENTSERVER_INCLUDE_DETAIL_TIMEMEASURMENT_HPP

@@ -12,7 +12,6 @@ else()
 endif()
 
 add_subdirectory(thirdparty/catch2)
-add_subdirectory(src/lib)
 add_subdirectory(src/client)
 add_subdirectory(src/server)
 add_subdirectory(tests)
