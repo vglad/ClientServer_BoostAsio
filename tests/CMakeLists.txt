@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(LIB_SOURCE_FILES
     ../src/client/Client.cpp
     ../src/server/Server.cpp
-    )
+)
 
 set(TESTS_SOURCE_FILES testMain.cpp
     Client_Tests.cpp

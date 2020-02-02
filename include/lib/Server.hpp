@@ -9,7 +9,11 @@ namespace clientServer::server {
 
   class Server {
   public:
-    asio::ip::tcp::endpoint create_endpoint(uint16_t port_num) const;
+
+    template<typename T>
+    T create_endpoint(uint16_t port_num) {
+      return T(asio::ip::address_v4::any(), port_num);
+    }
 
   };
 

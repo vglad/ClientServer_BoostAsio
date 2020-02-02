@@ -9,7 +9,7 @@ using namespace clientServer::detail;
 int main() {
   auto srv = Server{};
   try {
-    auto ep = srv.create_endpoint(54000);
+    auto ep = srv.create_endpoint<asio::ip::tcp::endpoint>(54000);
     std::cout << ep.address().to_string() << " "
               << ep.port() << '\n';
   }
