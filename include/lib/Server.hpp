@@ -3,21 +3,28 @@
 
 #include <string>
 #include <boost/asio.hpp>
+#include "StringUtils.hpp"
 
 namespace clientServer::server {
+  using namespace clientServer::detail;
+  using namespace boost::asio;
 
   class Server {
   public:
-
     template<typename Endpoint, typename IPAddressVer>
     Endpoint create_endpoint(uint16_t port_num) const noexcept;
 
+    ip::tcp::acceptor open_passive_socket(ip::tcp ipVersion);
+
+  protected:
+    virtual int get_ec_value(boost::system::error_code const & ec) const noexcept;
   };
 
   template<typename Endpoint, typename IPAddressVer>
   Endpoint Server::create_endpoint(uint16_t port_num) const noexcept {
     return Endpoint(IPAddressVer::any(), port_num);
   }
+
 
 }
 
