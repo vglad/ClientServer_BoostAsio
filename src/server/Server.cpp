@@ -1,9 +1,9 @@
 #include "Server.hpp"
 
 using namespace clientServer::server;
-using Socket = ip::tcp::acceptor;
 
-Socket Server::open_passive_socket(ip::tcp ipVersion) {
+using Socket = ip::tcp::acceptor;
+Socket Server::open_passive_socket(ip::tcp const & ipVersion) const {
   auto ios    = io_service{};
   auto socket = Socket(ios);
   auto ec     = boost::system::error_code{};

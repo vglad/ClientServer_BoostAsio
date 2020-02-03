@@ -17,7 +17,9 @@ namespace clientServer::mocks {
 
   class MockClient : public Client {
   public:
-    MAKE_MOCK1(get_ec_value, int(boost::system::error_code const & ec), const noexcept);
+    MAKE_MOCK1 (get_ec_value,
+                int(boost::system::error_code const & ec),
+                const noexcept override);
   };
 
 }

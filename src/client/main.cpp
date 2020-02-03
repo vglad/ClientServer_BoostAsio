@@ -11,7 +11,7 @@ int main() {
   auto cl = Client{};
   try {
     auto ep = cl.create_endpoint<ip::tcp::endpoint, ip::address_v4>
-        ("127.0.0.1", 54000);
+                    ("127.0.0.1", 54000);
     std::cout << ep.address().to_string() << " " << ep.port() << '\n';
 
     auto sock = cl.open_active_socket<ip::tcp>(ip::tcp::v6());
