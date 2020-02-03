@@ -5,17 +5,19 @@
 #include <boost/asio.hpp>
 
 namespace clientServer::server {
-  using namespace boost;
 
   class Server {
   public:
 
-    template<typename T>
-    T create_endpoint(uint16_t port_num) {
-      return T(asio::ip::address_v4::any(), port_num);
-    }
+    template<typename Endpoint, typename IPAddressVer>
+    Endpoint create_endpoint(uint16_t port_num) const noexcept;
 
   };
+
+  template<typename Endpoint, typename IPAddressVer>
+  Endpoint Server::create_endpoint(uint16_t port_num) const noexcept {
+    return Endpoint(IPAddressVer::any(), port_num);
+  }
 
 }
 

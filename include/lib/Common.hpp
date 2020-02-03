@@ -9,6 +9,11 @@ namespace clientServer::common {
     UDP = 17
   };
 
+  enum class IPVersion {
+    IPv4,
+    IPv6
+  };
+
 }
 
 #endif //CLIENTSERVER_INCLUDE_LIB_COMMON_HPP
