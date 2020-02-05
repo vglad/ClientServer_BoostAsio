@@ -1,3 +1,4 @@
+
 #include "Precompiled.hpp"
 #include "Client.hpp"
 
@@ -14,8 +15,9 @@ int main() {
                     ("127.0.0.1", 54000);
     std::cout << ep.address().to_string() << " " << ep.port() << '\n';
 
-    auto sock = cl.open_active_socket<ip::tcp>(ip::tcp::v6());
-    std::cout << (sock.is_open() ? "opened" : "error") << '\n';
+    auto sock = cl.open_active_socket<ip::tcp>(ip::tcp::v4());
+    auto open = sock.is_open();
+    std::cout << (open ? "opened" : "error") << '\n';
 
   }
   catch (std::exception const &) {

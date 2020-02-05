@@ -14,6 +14,10 @@ set(TESTS_SOURCE_FILES testMain.cpp
     Server_Tests.cpp
 )
 
+if (WIN32)
+  add_definitions( -DBOOST_ALL_NO_LIB )
+endif()
+
 add_library(libClientServer STATIC ${LIB_SOURCE_FILES})
 add_executable (allTests ${TESTS_SOURCE_FILES})
 
@@ -27,15 +31,15 @@ else()
 endif()
 
 target_include_directories(allTests PRIVATE
-    ../thirdparty
-    ../thirdparty/trompeloeil
-    ../include/lib
-    ../include/detail
+  ../thirdparty
+  ../thirdparty/trompeloeil
+  ../include/lib
+  ../include/detail
 )
 
 target_include_directories(libClientServer PRIVATE
-    ../thirdparty
-    ../include/lib
-    ../include/detail
-    )
+  ../thirdparty
+  ../include/lib
+  ../include/detail
+)
 

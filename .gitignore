@@ -30,6 +30,10 @@ bld/
 # CLion 2019 cmake build directory
 cmake-build-debug/
 
+# Specific Boost files
+!**/predef/architecture/x86
+!**/predef/hardware/simd/x86
+
 # Visual Studio 2019 CMake settings json file
 # Ignored to port project to CLion on linux PC
 CMakeSettings.json
