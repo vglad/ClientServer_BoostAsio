@@ -16,12 +16,18 @@ namespace clientServer::client {
       create_endpoint(std::string const & raw_ip, uint16_t port_num) const;
 
     template<typename SocketType>
-      constexpr typename SocketType::socket
+      typename SocketType::socket
       open_active_socket(SocketType const & ipVersion) const;
+
+    template<typename Resolver>
+      typename Resolver::iterator
+      resolve_host(std::string const & host, std::string const & port_num) const;
 
   protected:
     virtual int get_ec_value(boost::system::error_code const & ec) const noexcept;
   };
+
+
 
   template<typename Endpoint, typename IPAddressVer>
     constexpr Endpoint
@@ -40,7 +46,7 @@ namespace clientServer::client {
     }
 
   template<typename SocketType>
-    constexpr typename SocketType::socket
+    typename SocketType::socket
     Client::open_active_socket(SocketType const & ipVersion) const {
       auto ios    = io_service{};
       auto socket = typename SocketType::socket(ios);
@@ -58,6 +64,24 @@ namespace clientServer::client {
       return socket;
     }
 
+  template<typename Resolver>
+    typename Resolver::iterator
+    Client::resolve_host(std::string const & host, std::string const & port_num)
+    const {
+      auto ios      = io_service{};
+      auto resolver = Resolver(ios);
+      auto query    = typename Resolver::query(host, port_num,
+                                       Resolver::query::numeric_service);
+      auto ec       = boost::system::error_code{};
+      auto it       = resolver.resolve(query, ec);
+      if (get_ec_value(ec) != 0) {
+        std::throw_with_nested(std::invalid_argument(concat(
+            "Failed to resolve IP address: [", host,
+            "]. Error #: ", ec.value(), ". Message: ", ec.message()
+        )));
+      }
+      return it;
+    }
 }
 
 #endif //CLIENTSERVER_INCLUDE_LIB_CLIENT_HPP

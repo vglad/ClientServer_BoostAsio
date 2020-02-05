@@ -125,9 +125,11 @@ TEST_CASE("testing client create_endpoint", "[client]") {
       );
     }
   }
+
 }
 
 TEST_CASE("testing client open_active_socket", "[client]") {
+
   SECTION("returns socket if opened successfully") {
     auto cl = Client{};
 
@@ -195,9 +197,11 @@ TEST_CASE("testing client open_active_socket", "[client]") {
       );
     }
   }
+
 }
 
 TEST_CASE("testing client get_ec_value", "[client]") {
+
   SECTION("get_ec_value returns proper value if no errors or empty") {
     auto fake_cl = FakeClient{};
     auto ec      = boost::system::error_code{};
@@ -213,5 +217,62 @@ TEST_CASE("testing client get_ec_value", "[client]") {
     REQUIRE(fake_cl.get_ec_value(ec) == 22);
     REQUIRE(ec.message() == "Invalid argument");
   }
+
 }
 
+TEST_CASE("testing client resolve_host", "[client]") {
+  auto cl = Client{};
+
+  SECTION("returns iterator to endpoints collection if resolved properly") {
+    SECTION("returns iterator to endpoints collection, TCP protocol") {
+      auto it = cl.resolve_host<ip::tcp::resolver>("localhost", "3333");
+      while (it->endpoint().address().is_v6()) { ++it; }
+      REQUIRE(it->endpoint().port() == 3333);
+      REQUIRE(it->endpoint().address().to_string() == "127.0.0.1");
+      REQUIRE(
+          it->endpoint().protocol().protocol() == static_cast<int>(Protocol::TCP));
+    }
+
+    SECTION("returns iterator to IP addresses collection, UDP protocol") {
+      auto it = cl.resolve_host<ip::udp::resolver>("localhost", "3333");
+      while (it->endpoint().address().is_v6()) { ++it; }
+      REQUIRE(it->endpoint().port() == 3333);
+      REQUIRE(it->endpoint().address().to_string() == "127.0.0.1");
+      REQUIRE(
+          it->endpoint().protocol().protocol() == static_cast<int>(Protocol::UDP));
+    }
+  }
+
+  SECTION("throw error if not resolved") {
+    SECTION("trow if protocol TCP") {
+      REQUIRE_THROWS_MATCHES(
+          cl.resolve_host<ip::tcp::resolver>("loca", "3333"),
+          std::invalid_argument,
+          Catch::Matchers::Predicate<std::invalid_argument>(
+              [](std::invalid_argument const & e) {
+                return e.what() == std::string(
+                    "Failed to resolve IP address: [loca]. Error #: 1. "
+                    "Message: Host not found (authoritative)"
+                );
+              }
+          )
+      );
+    }
+
+    SECTION("trow if protocol UDP") {
+      REQUIRE_THROWS_MATCHES(
+          cl.resolve_host<ip::tcp::resolver>("loca", "3333"),
+          std::invalid_argument,
+          Catch::Matchers::Predicate<std::invalid_argument>(
+              [](std::invalid_argument const & e) {
+                return e.what() == std::string(
+                    "Failed to resolve IP address: [loca]. Error #: 1. "
+                    "Message: Host not found (authoritative)"
+                );
+              }
+          )
+      );
+    }
+  }
+
+}

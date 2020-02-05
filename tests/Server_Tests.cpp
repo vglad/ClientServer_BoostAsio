@@ -101,3 +101,57 @@ TEST_CASE("testing server get_ec_value", "[server]") {
     REQUIRE(ec.message() == "Invalid argument");
   }
 }
+
+TEST_CASE("testing bind", "[server]") {
+  auto srv = Server{};
+
+  SECTION("successful bind with valid parameters") {
+    SECTION("bind returns proper acceptor with TCP protocol, IPv4") {
+      auto acceptor = srv.bind_socket<ip::address_v4>(ip::tcp::v4(), 3333);
+      REQUIRE(acceptor.is_open());
+      REQUIRE(acceptor.local_endpoint().protocol().protocol() ==
+              static_cast<int>(Protocol::TCP));
+      REQUIRE(acceptor.local_endpoint().address().is_v4());
+      REQUIRE(acceptor.local_endpoint().port() == 3333);
+    }
+
+    SECTION("bind returns proper acceptor with TCP protocol, IPv6") {
+      auto acceptor = srv.bind_socket<ip::address_v6>(ip::tcp::v6(), 3333);
+      REQUIRE(acceptor.is_open());
+      REQUIRE(acceptor.local_endpoint().protocol().protocol() ==
+              static_cast<int>(Protocol::TCP));
+      REQUIRE(acceptor.local_endpoint().address().is_v6());
+      REQUIRE(acceptor.local_endpoint().port() == 3333);
+    }
+  }
+
+  SECTION("throw if parameters invalid") {
+    SECTION("throw if IP version in endpoint and address mismatch"){
+      REQUIRE_THROWS_MATCHES(
+          srv.bind_socket<ip::address_v6>(ip::tcp::v4(), 3333),
+          std::invalid_argument,
+          Catch::Matchers::Predicate<std::invalid_argument>(
+              [](std::invalid_argument const & e) {
+                return e.what() == std::string(
+                    "Failed to bind acceptor socket: [TCP, 3333]. "
+                    "Error #: 97. Message: "
+                );
+              }
+          )
+      );
+
+      REQUIRE_THROWS_MATCHES(
+          srv.bind_socket<ip::address_v4>(ip::tcp::v6(), 3333),
+          std::invalid_argument,
+          Catch::Matchers::Predicate<std::invalid_argument>(
+              [](std::invalid_argument const & e) {
+                return e.what() == std::string(
+                    "Failed to bind acceptor socket: [TCP, 3333]. "
+                    "Error #: 22. Message: "
+                );
+              }
+          )
+      );
+    }
+  }
+}
