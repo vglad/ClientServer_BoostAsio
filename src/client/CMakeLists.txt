@@ -19,6 +19,10 @@ if (NOT MSVC)
   target_link_libraries(client PRIVATE Threads::Threads)
 endif()
 
+if(MINGW)
+  target_link_libraries(client PRIVATE ws2_32)
+endif()
+
 target_include_directories(client PRIVATE
   ../../thirdparty
   ../../include/detail

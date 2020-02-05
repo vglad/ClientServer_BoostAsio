@@ -18,26 +18,8 @@ namespace clientServer::server {
     ip::tcp::acceptor open_passive_socket(ip::tcp const & ipVersion) const;
 
     template<typename IPAddrVer>
-    ip::tcp::acceptor
-    bind_socket(ip::tcp const & ipVersion, uint16_t port_num) const;
-
-//    {
-//
-//      auto ep       = create_endpoint<ip::tcp::endpoint, IPAddrVer>(port_num);
-//      auto acceptor = open_passive_socket(ipVersion);
-//      auto ec       = boost::system::error_code{};
-//      acceptor.bind(ep, ec);
-//      if (get_ec_value(ec) != 0) {
-//        std::throw_with_nested(std::invalid_argument(concat(
-//          "Failed to bind acceptor socket: [TCP, ", port_num,
-//          "]. Error #: ", ec.value(), ". Message: "
-//        )));
-//      }
-//
-//
-//      return acceptor;
-//    }
-
+      ip::tcp::acceptor
+      bind_socket(ip::tcp const & ipVersion, uint16_t port_num) const;
 
   protected:
     virtual int get_ec_value(boost::system::error_code const & ec) const noexcept;
