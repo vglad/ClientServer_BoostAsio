@@ -66,7 +66,7 @@ TEST_CASE("testing server open_passive_socket", "[server]") {
 
   SECTION("returns error if opened with errors") {
     auto mock_srv = MockServer{};
-    auto ios = io_service{};
+    auto ios      = io_service{};
 
     SECTION("throw error when open method failed for protocol TCP, IPv4") {
       REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
@@ -86,9 +86,124 @@ TEST_CASE("testing server open_passive_socket", "[server]") {
   }
 }
 
+
+TEST_CASE("testing server open_socket", "[server]") {
+
+  SECTION("returns socket if opened successfully") {
+    auto cl = Server{};
+
+    SECTION("returns TCP, IPv4 socket") {
+      auto sock = cl.open_socket<ip::tcp::socket, ip::tcp>(IPVer::IPv4);
+      REQUIRE(sock.is_open());
+      REQUIRE(
+          sock.local_endpoint().protocol().protocol() ==
+          static_cast<int>(Protocol::TCP));
+      REQUIRE(
+          sock.local_endpoint().protocol().family() ==
+          static_cast<int>(IPVer::IPv4));
+    }
+
+    SECTION("returns TCP, IPv6 socket") {
+      auto sock = cl.open_socket<ip::tcp::socket, ip::tcp>(IPVer::IPv6);
+      REQUIRE(sock.is_open());
+      REQUIRE(
+          sock.local_endpoint().protocol().protocol() ==
+          static_cast<int>(Protocol::TCP));
+      REQUIRE(
+          sock.local_endpoint().protocol().family() ==
+          static_cast<int>(IPVer::IPv6));
+    }
+
+    SECTION("returns UDP, IPv4 socket") {
+      auto sock = cl.open_socket<ip::udp::socket, ip::udp>(IPVer::IPv4);
+      REQUIRE(sock.is_open());
+      REQUIRE(
+          sock.local_endpoint().protocol().protocol() ==
+          static_cast<int>(Protocol::UDP));
+      REQUIRE(
+          sock.local_endpoint().protocol().family() ==
+          static_cast<int>(IPVer::IPv4));
+    }
+
+    SECTION("returns UDP, IPv6 socket") {
+      auto sock = cl.open_socket<ip::udp::socket, ip::udp>(IPVer::IPv6);
+      REQUIRE(sock.is_open());
+      REQUIRE(
+          sock.local_endpoint().protocol().protocol() ==
+          static_cast<int>(Protocol::UDP));
+      REQUIRE(
+          sock.local_endpoint().protocol().family() ==
+          static_cast<int>(IPVer::IPv6));
+    }
+  }
+
+  SECTION("returns error if opened with errors") {
+      auto mock_srv = MockServer{};
+
+      SECTION("throw error when open_socket failed for active socket, "
+              "protocol TCP, IPv4") {
+        REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
+        REQUIRE_THROWS_AS(
+            (mock_srv.open_socket<ip::tcp::socket, ip::tcp>(IPVer::IPv4)),
+            std::runtime_error
+        );
+        REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
+        REQUIRE_THROWS_WITH(
+            (mock_srv.open_socket<ip::tcp::socket, ip::tcp>(IPVer::IPv4)),
+            Catch::Contains("Failed to open the socket: [TCP, IPv4]. Error #: ")
+        );
+      }
+
+    SECTION("throw error when open_socket failed for active socket, "
+            "protocol TCP, IPv6") {
+      REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
+      REQUIRE_THROWS_AS(
+          (mock_srv.open_socket<ip::tcp::socket, ip::tcp>(IPVer::IPv6)),
+          std::runtime_error
+      );
+      REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
+      REQUIRE_THROWS_WITH(
+          (mock_srv.open_socket<ip::tcp::socket, ip::tcp>(IPVer::IPv6)),
+          Catch::Contains("Failed to open the socket: [TCP, IPv6]. Error #: ")
+      );
+    }
+
+    SECTION("throw error when open_socket failed for active socket, "
+            "protocol UDP, IPv4") {
+      REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
+      REQUIRE_THROWS_AS(
+          (mock_srv.open_socket<ip::udp::socket, ip::udp>(IPVer::IPv4)),
+          std::runtime_error
+      );
+      REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
+      REQUIRE_THROWS_WITH(
+          (mock_srv.open_socket<ip::udp::socket, ip::udp>(IPVer::IPv4)),
+          Catch::Contains("Failed to open the socket: [UDP, IPv4]. Error #: ")
+      );
+    }
+
+
+    SECTION("throw error when open_socket failed for active socket, "
+            "protocol UDP, IPv6") {
+      REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
+      REQUIRE_THROWS_AS(
+          (mock_srv.open_socket<ip::udp::socket, ip::udp>(IPVer::IPv6)),
+          std::runtime_error
+      );
+      REQUIRE_CALL(mock_srv, get_ec_value(_)).RETURN(22);
+      REQUIRE_THROWS_WITH(
+          (mock_srv.open_socket<ip::udp::socket, ip::udp>(IPVer::IPv6)),
+          Catch::Contains("Failed to open the socket: [UDP, IPv6]. Error #: ")
+      );
+    }
+
+  }
+}
+
+
 TEST_CASE("testing server get_ec_value", "[server]") {
   SECTION("get_ec_value returns proper value if no errors or empty") {
-    auto  msg = "Success";
+    auto msg = "Success";
 #ifdef WIN32
     msg = "The operation completed successfully";
 #endif
@@ -101,8 +216,11 @@ TEST_CASE("testing server get_ec_value", "[server]") {
 
   SECTION("get_ec_value returns proper value if has value") {
     auto fake_errNum = 22;
-    auto fake_srv = FakeServer{};
-    auto ec       = boost::system::error_code{
+    //#ifdef WIN32
+    //    errNum = 10022;
+    //#endif
+    auto fake_srv    = FakeServer{};
+    auto ec          = boost::system::error_code{
         make_error_code(boost::system::errc::invalid_argument)
     };
     REQUIRE(fake_srv.get_ec_value(ec) == fake_errNum);
@@ -135,9 +253,9 @@ TEST_CASE("testing bind", "[server]") {
   }
 
   SECTION("throw if parameters invalid") {
-
     auto errNum = 97;
-    SECTION("throw if IP version in endpoint and address mismatch"){
+
+    SECTION("throw if IP version in endpoint and address mismatch") {
 #ifdef WIN32
       errNum = 10047;
 #endif

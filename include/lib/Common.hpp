@@ -9,10 +9,12 @@ namespace clientServer::common {
     UDP = 17
   };
 
-  enum class IPVersion {
-    IPv4,
-    IPv6
+  // boost::asio 1.72 protocols family() v4 and v6
+   enum class IPVer{
+     IPv4 = 2,
+     IPv6 = 10
   };
+
 
 }
 
