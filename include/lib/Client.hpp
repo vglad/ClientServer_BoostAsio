@@ -17,16 +17,15 @@ namespace clientServer::client {
 
     template<typename SocketType>
       typename SocketType::socket
-      open_active_socket(SocketType const & ipVersion) const;
+      open_active_socket(SocketType const & ipVersion, io_service & ios) const;
 
     template<typename Resolver>
       typename Resolver::iterator
-      resolve_host(std::string const & host, std::string const & port_num) const;
+      resolve_host(std::string const & host, std::string const & port_num, io_service & ios) const;
 
   protected:
     virtual int get_ec_value(boost::system::error_code const & ec) const noexcept;
   };
-
 
 
   template<typename Endpoint, typename IPAddressVer>
@@ -47,8 +46,8 @@ namespace clientServer::client {
 
   template<typename SocketType>
     typename SocketType::socket
-    Client::open_active_socket(SocketType const & ipVersion) const {
-      auto ios    = io_service{};
+    Client::open_active_socket(SocketType const & ipVersion, io_service & ios)
+    const {
       auto socket = typename SocketType::socket(ios);
       auto ec     = boost::system::error_code{};
       socket.open(ipVersion, ec);
@@ -66,12 +65,11 @@ namespace clientServer::client {
 
   template<typename Resolver>
     typename Resolver::iterator
-    Client::resolve_host(std::string const & host, std::string const & port_num)
+    Client::resolve_host(std::string const & host, std::string const & port_num, io_service & ios)
     const {
-      auto ios      = io_service{};
       auto resolver = Resolver(ios);
       auto query    = typename Resolver::query(host, port_num,
-                                       Resolver::query::numeric_service);
+                                               Resolver::query::numeric_service);
       auto ec       = boost::system::error_code{};
       auto it       = resolver.resolve(query, ec);
       if (get_ec_value(ec) != 0) {

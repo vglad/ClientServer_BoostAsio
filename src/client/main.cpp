@@ -13,11 +13,20 @@ int main() {
   try {
     auto ep = cl.create_endpoint<ip::tcp::endpoint, ip::address_v4>
                     ("127.0.0.1", 54000);
-    std::cout << ep.address().to_string() << " " << ep.port() << '\n';
+    std::cout << "endpoint created. IP: " << ep.address().to_string()
+              << ", port: " << ep.port() << '\n';
 
-    auto sock = cl.open_active_socket<ip::tcp>(ip::tcp::v4());
-    auto open = sock.is_open();
-    std::cout << (open ? "opened" : "error") << '\n';
+    auto ios  = io_service{};
+    auto sock = cl.open_active_socket<ip::tcp>(ip::tcp::v4(), ios);
+    std::cout << "socket opened: "
+              << (sock.is_open() ? "successful" : "error") << '\n';
+
+    auto it   = cl.resolve_host<ip::tcp::resolver>("localhost", "54000", ios);
+    for (auto it_end = ip::tcp::resolver::iterator{}; it != it_end; ++it) {
+      std::cout << it->host_name()
+                << " resolved with IP: " << it->endpoint().address().to_string()
+                << ", port: " << it->endpoint().port() << '\n';
+    }
 
   }
   catch (std::exception const &) {

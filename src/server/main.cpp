@@ -10,10 +10,11 @@ int main() {
 
   auto srv = Server{};
   try {
-    auto ep = srv.create_endpoint<ip::udp::endpoint, ip::address_v6>(54000);
+    auto ep = srv.create_endpoint<ip::tcp::endpoint, ip::address_v4>(54000);
     std::cout << ep.address().to_string() << " " << ep.port() << '\n';
 
-    auto sock = srv.open_passive_socket(ip::tcp::v6());
+    auto ios = io_service{};
+    auto sock = srv.open_passive_socket(ip::tcp::v4(), ios);
     std::cout << (sock.is_open() ? "opened" : "error") << '\n';
   }
   catch (std::exception const &) {

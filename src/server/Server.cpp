@@ -3,8 +3,9 @@
 using namespace clientServer::server;
 
 using Socket = ip::tcp::acceptor;
-Socket Server::open_passive_socket(ip::tcp const & ipVersion) const {
-  auto ios    = io_service{};
+Socket Server::open_passive_socket(ip::tcp const & ipVersion, io_service & ios)
+const {
+  //auto ios    = io_service{};
   auto socket = Socket(ios);
   auto ec     = boost::system::error_code{};
   socket.open(ipVersion, ec);
