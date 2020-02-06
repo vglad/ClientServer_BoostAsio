@@ -21,7 +21,7 @@ int main() {
     std::cout << "socket opened: "
               << (sock.is_open() ? "successful" : "error") << '\n';
 
-    auto it   = cl.resolve_host<ip::tcp::resolver>("localhost", "54000", ios);
+    auto it   = cl.resolve_host<ip::tcp::resolver>("loca", "54000", ios);
     for (auto it_end = ip::tcp::resolver::iterator{}; it != it_end; ++it) {
       std::cout << it->host_name()
                 << " resolved with IP: " << it->endpoint().address().to_string()

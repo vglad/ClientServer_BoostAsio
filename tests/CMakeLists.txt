@@ -6,7 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LIB_SOURCE_FILES ../src/client/Client.cpp ../src/server/Server.cpp)
 
-set(TESTS_SOURCE_FILES testMain.cpp Client_Tests.cpp Server_Tests.cpp)
+set(TESTS_SOURCE_FILES testMain.cpp 
+  Client_Tests.cpp 
+  Server_Tests.cpp
+)
 
 if (WIN32)
   add_definitions( -DBOOST_ALL_NO_LIB )

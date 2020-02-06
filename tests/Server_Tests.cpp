@@ -101,9 +101,6 @@ TEST_CASE("testing server get_ec_value", "[server]") {
 
   SECTION("get_ec_value returns proper value if has value") {
     auto fake_errNum = 22;
-//#ifdef WIN32
-//    errNum = 10022;
-//#endif
     auto fake_srv = FakeServer{};
     auto ec       = boost::system::error_code{
         make_error_code(boost::system::errc::invalid_argument)
@@ -138,8 +135,8 @@ TEST_CASE("testing bind", "[server]") {
   }
 
   SECTION("throw if parameters invalid") {
-    auto errNum = 97;
 
+    auto errNum = 97;
     SECTION("throw if IP version in endpoint and address mismatch"){
 #ifdef WIN32
       errNum = 10047;

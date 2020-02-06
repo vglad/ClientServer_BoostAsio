@@ -218,10 +218,11 @@ TEST_CASE("testing client get_ec_value", "[client]") {
 
 }
 
+
 TEST_CASE("testing client resolve_host", "[client]") {
   auto cl  = Client{};
   auto ios = io_service{};
-
+    
   SECTION("returns iterator to endpoints collection if resolved properly") {
     SECTION("returns iterator to endpoints collection, TCP protocol") {
       auto it = cl.resolve_host<ip::tcp::resolver>("localhost", "3333", ios);
@@ -241,6 +242,12 @@ TEST_CASE("testing client resolve_host", "[client]") {
           it->endpoint().protocol().protocol() == static_cast<int>(Protocol::UDP));
     }
   }
+  
+
+  /*
+  //// these are working tests
+  //// temporary disabled due to long timeout in syncronous resolve() call to unknown host names
+  //// each test adds approximately 10 sec timeout
 
   SECTION("throw error if not resolved") {
     auto errNum = 1;
@@ -251,22 +258,23 @@ TEST_CASE("testing client resolve_host", "[client]") {
     SECTION("trow if protocol TCP") {
       REQUIRE_THROWS_AS(cl.resolve_host<ip::tcp::resolver>("loca", "3333", ios),
                         std::invalid_argument);
-      REQUIRE_THROWS_WITH(
-          cl.resolve_host<ip::tcp::resolver>("loca", "3333", ios),
-          Catch::Contains(concat("Failed to resolve IP address: [loca]. Error #: ",
-                                 errNum))
-      );
+      //REQUIRE_THROWS_WITH(
+      //    cl.resolve_host<ip::tcp::resolver>("loca", "3333", ios),
+      //    Catch::Contains(concat("Failed to resolve IP address: [loca]. Error #: ",
+      //                           errNum))
+      //);
     }
 
     SECTION("trow if protocol UDP") {
-      REQUIRE_THROWS_AS(cl.resolve_host<ip::udp::resolver>("loca", "3333", ios),
-                        std::invalid_argument);
-      REQUIRE_THROWS_WITH(
-          cl.resolve_host<ip::udp::resolver>("loca", "3333", ios),
-          Catch::Contains(concat("Failed to resolve IP address: [loca]. Error #: ",
-                                 errNum))
-      );
+    //  REQUIRE_THROWS_AS(cl.resolve_host<ip::udp::resolver>("loca", "3333", ios),
+    //                    std::invalid_argument);
+    //  REQUIRE_THROWS_WITH(
+    //      cl.resolve_host<ip::udp::resolver>("loca", "3333", ios),
+    //      Catch::Contains(concat("Failed to resolve IP address: [loca]. Error #: ",
+    //                             errNum))
+    //  );
     }
   }
+  */
 
 }
