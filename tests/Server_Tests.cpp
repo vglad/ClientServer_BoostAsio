@@ -152,6 +152,7 @@ TEST_CASE("testing bind", "[server]") {
                                  "Error #: ", errNum, ". Message: "))
       );
 
+      errNum = 22;
 #ifdef WIN32
       errNum = 10014;
 #endif
