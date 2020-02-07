@@ -15,7 +15,7 @@ TEST_CASE("testing client create_endpoint", "[client]") {
 
   SECTION("returns endpoint if parameters valid") {
     SECTION("returns endpoint if protocol is TCP and IP address v4") {
-      auto ep = cl.create_endpoint<ip::tcp::endpoint, ip::address_v4>
+      auto ep = l<ip::tcp::endpoint, ip::address_v4>
                       ("127.0.0.1", 3333);
       REQUIRE(ep.port() == 3333);
       REQUIRE(ep.address().is_v4());

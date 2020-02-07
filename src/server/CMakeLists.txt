@@ -6,18 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCE_FILES Server.cpp main.cpp)
 
-if (WIN32)
-  add_definitions(-DBOOST_ALL_NO_LIB)
-endif()
-
+add_definitions(BOOST_ALL_NO_LIB)
+set(PLATFORM_LIBRARIES "" CACHE STRING "Set the platform libraries for your build environment")
 add_executable(server ${SOURCE_FILES})
 
-if (NOT MSVC)
-  set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-  set(THREADS_PREFER_PTHREAD_FLAG TRUE)
-  find_package(Threads REQUIRED)
-  target_link_libraries(server PRIVATE Threads::Threads)
-endif()
+find_package(Threads REQUIRED)
+target_link_libraries(server PRIVATE Threads::Threads)
+
+target_link_libraries(server PRIVATE ${PLATFORM_LIBRARIES})
 
 if(MINGW)
   target_link_libraries(server PRIVATE ws2_32)

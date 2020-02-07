@@ -2,6 +2,7 @@
 #include "Server.hpp"
 
 #include <iostream>
+#include <memory>
 
 int main() {
   using namespace clientServer::server;
@@ -15,8 +16,16 @@ int main() {
     std::cout << "endpoint created. IP: " << ep.address().to_string()
               << ", port: " << ep.port() << '\n';
 
-    auto ios = io_service{};
+    auto iosPtr = std::make_unique<io_service>();
+    auto& ios = *iosPtr;
     auto sock = srv.open_passive_socket(ip::tcp::v4(), ios);
+    auto clientPtr = std::make_unique<ip::tcp::socket>(ios);
+    auto& client = *clientPtr;
+    sock.async_accept(client, [clientPtr = std::move(clientPtr), iosPtr = std::move(iosPtr)] (const auto& ec) {
+        if (ec)
+            return;
+
+    });
     std::cout << "socket opened: "
               << (sock.is_open() ? "successful" : "error") << '\n';
 
